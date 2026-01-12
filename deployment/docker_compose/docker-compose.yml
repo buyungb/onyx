@@ -194,7 +194,7 @@ services:
     volumes:
       - db_volume:/var/lib/postgresql/data
     networks:
-      - dokploy-network
+      - onyx-network
 
   index:
     image: vespaengine/vespa:8.609.39
