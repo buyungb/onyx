@@ -224,7 +224,7 @@ services:
       - path: .env
         required: false
     environment:
-      - DOMAIN=localhost
+      - DOMAIN=docs.rtpintar.com
       - NGINX_PROXY_CONNECT_TIMEOUT=${NGINX_PROXY_CONNECT_TIMEOUT:-300}
       - NGINX_PROXY_SEND_TIMEOUT=${NGINX_PROXY_SEND_TIMEOUT:-300}
       - NGINX_PROXY_READ_TIMEOUT=${NGINX_PROXY_READ_TIMEOUT:-300}
