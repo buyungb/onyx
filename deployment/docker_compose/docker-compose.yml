@@ -49,7 +49,7 @@ services:
     volumes:
       - api_server_logs:/var/log/onyx
     networks:
-      - dokploy-network
+      - onyx-network
 
   background:
     image: ${ONYX_BACKEND_IMAGE:-onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}}
@@ -92,7 +92,7 @@ services:
         max-size: "50m"
         max-file: "6"
     networks:
-      - dokploy-network
+      - onyx-network
 
   web_server:
     image: ${ONYX_WEB_SERVER_IMAGE:-onyxdotapp/onyx-web-server:${IMAGE_TAG:-latest}}
@@ -117,7 +117,7 @@ services:
     environment:
       - INTERNAL_URL=${INTERNAL_URL:-http://api_server:8080}
     networks:
-      - dokploy-network
+      - onyx-network
 
   inference_model_server:
     image: ${ONYX_MODEL_SERVER_IMAGE:-onyxdotapp/onyx-model-server:${IMAGE_TAG:-latest}}
@@ -144,7 +144,7 @@ services:
         max-size: "50m"
         max-file: "6"
     networks:
-      - dokploy-network
+      - onyx-network
 
   indexing_model_server:
     image: ${ONYX_MODEL_SERVER_IMAGE:-onyxdotapp/onyx-model-server:${IMAGE_TAG:-latest}}
@@ -173,7 +173,7 @@ services:
         max-size: "50m"
         max-file: "6"
     networks:
-      - dokploy-network
+      - onyx-network
 
   relational_db:
     image: postgres:15.2-alpine
@@ -212,7 +212,7 @@ services:
         max-size: "50m"
         max-file: "6"
     networks:
-      - dokploy-network
+      - onyx-network
 
   nginx:
     image: nginx:1.25.5-alpine
@@ -254,7 +254,7 @@ services:
     tmpfs:
       - /data
     networks:
-      - dokploy-network
+      - onyx-network
 
   minio:
     image: minio/minio:RELEASE.2025-07-23T15-54-02Z-cpuv1
@@ -275,7 +275,7 @@ services:
       timeout: 20s
       retries: 3
     networks:
-      - dokploy-network
+      - onyx-network
 
   code-interpreter:
     image: onyxdotapp/code-interpreter:${CODE_INTERPRETER_IMAGE_TAG:-latest}
@@ -297,7 +297,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - dokploy-network
+      - onyx-network
 
 volumes:
   db_volume:
@@ -311,5 +311,5 @@ volumes:
   indexing_model_server_logs:
 
 networks:
-  dokploy-network:
+  onyx-network:
     external: true
