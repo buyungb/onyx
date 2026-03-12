@@ -267,12 +267,12 @@ services:
   cache:
     image: redis:7.4-alpine
     restart: unless-stopped
-    command: redis-server --save "" --appendonly no
+    command: redis-server --save 60 1000 --appendonly yes
     env_file:
       - path: .env
         required: false
-    tmpfs:
-      - /data
+    volumes:
+      - redis_data:/data
     networks:
       - dokploy-network
 
@@ -320,11 +320,35 @@ services:
       - dokploy-network
 
 volumes:
+  # -----------------------------------------------------------------------
+  # Data volumes marked external so Dokploy redeploys never remove them.
+  # Pre-create once before the first deploy:
+  #   docker volume create onyx_db_volume
+  #   docker volume create onyx_vespa_volume
+  #   docker volume create onyx_minio_data
+  #   docker volume create onyx_redis_data
+  #   docker volume create onyx_model_cache_huggingface
+  #   docker volume create onyx_indexing_huggingface_model_cache
+  # -----------------------------------------------------------------------
   db_volume:
+    external: true
+    name: onyx_db_volume
   vespa_volume:
+    external: true
+    name: onyx_vespa_volume
   minio_data:
+    external: true
+    name: onyx_minio_data
+  redis_data:
+    external: true
+    name: onyx_redis_data
   model_cache_huggingface:
+    external: true
+    name: onyx_model_cache_huggingface
   indexing_huggingface_model_cache:
+    external: true
+    name: onyx_indexing_huggingface_model_cache
+  # Log volumes - expendable, safe to let compose manage
   api_server_logs:
   background_logs:
   inference_model_server_logs:
