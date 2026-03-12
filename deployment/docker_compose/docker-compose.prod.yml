@@ -128,17 +128,10 @@ services:
       - path: .env
         required: false
     depends_on:
-      api_server:
-        condition: service_healthy
+      - api_server
     restart: unless-stopped
     environment:
       - INTERNAL_URL=${INTERNAL_URL:-http://api_server:8080}
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
-      interval: 15s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
     logging:
       driver: json-file
       options:
@@ -247,10 +240,8 @@ services:
     image: nginx:1.25.5-alpine
     restart: unless-stopped
     depends_on:
-      api_server:
-        condition: service_healthy
-      web_server:
-        condition: service_healthy
+      - api_server
+      - web_server
     env_file:
       - path: .env
         required: false
