@@ -320,39 +320,28 @@ services:
       - dokploy-network
 
 volumes:
-  # -----------------------------------------------------------------------
-  # Data volumes marked external so Dokploy redeploys never remove them.
-  # Pre-create once before the first deploy:
-  #   docker volume create onyx_db_volume
-  #   docker volume create onyx_vespa_volume
-  #   docker volume create onyx_minio_data
-  #   docker volume create onyx_redis_data
-  #   docker volume create onyx_model_cache_huggingface
-  #   docker volume create onyx_indexing_huggingface_model_cache
-  # -----------------------------------------------------------------------
+  # Explicit names prevent Dokploy from prefixing with a changing project name,
+  # keeping volumes stable across redeploys. Auto-created on first deploy.
   db_volume:
-    external: true
     name: onyx_db_volume
   vespa_volume:
-    external: true
     name: onyx_vespa_volume
   minio_data:
-    external: true
     name: onyx_minio_data
   redis_data:
-    external: true
     name: onyx_redis_data
   model_cache_huggingface:
-    external: true
     name: onyx_model_cache_huggingface
   indexing_huggingface_model_cache:
-    external: true
     name: onyx_indexing_huggingface_model_cache
-  # Log volumes - expendable, safe to let compose manage
   api_server_logs:
+    name: onyx_api_server_logs
   background_logs:
+    name: onyx_background_logs
   inference_model_server_logs:
+    name: onyx_inference_model_server_logs
   indexing_model_server_logs:
+    name: onyx_indexing_model_server_logs
 
 networks:
   dokploy-network:
